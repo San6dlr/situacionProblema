@@ -5,3 +5,7 @@ Episodio::Episodio(string ID, string nombre, string generos, int calificacion, d
     this->temporada = temporada; 
     this->episodio = episodio; 
 }
+
+int Episodio::getTemporada() {return temporada;}
+
+int Episodio::getEpisodio() {return episodio;}

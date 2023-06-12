@@ -9,3 +9,13 @@ Video::Video(string ID, string nombre, string generos, int calificacion, double 
     this->minutos = minutos; 
     this->fecha = fecha;  
 }
+
+
+string Video::getNombre() {return nombre;}
+string Video::getGeneros() {return generos;}
+int Video::getCalificacion() {return calificacion;}
+
+void Video::setCalificacion(int calificacion)
+{
+    this->calificacion = calificacion; 
+}

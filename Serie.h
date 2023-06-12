@@ -4,15 +4,21 @@
 
 #include "Episodio.h"
 #include<vector>
+#include<iostream>
+#include<string>
 
 
 class Serie
 {
-private: 
+private:
+    string nombreS; 
     vector<Episodio> Episodios; 
 
 public: 
     Serie(vector<Episodio> Episodios); 
+
+    void mostrarEpisodios();
+    double caliPromedio(); 
 
 };
 #endif

@@ -1,7 +1,6 @@
 
 #ifndef VIDEO_H
 #define VIDEO_H
-
 #include<string>
 using namespace std; 
 
@@ -19,6 +18,16 @@ protected:
 public: 
     // Constructor Video
     Video(string ID, string nombre, string generos, int calificacion, double minutos, string fecha);
+
+    // getters 
+     
+    string getNombre(); 
+    string getGeneros();
+    int getCalificacion();
+
+    // setters
+
+    void setCalificacion(int calificacion); 
 
 }; 
 

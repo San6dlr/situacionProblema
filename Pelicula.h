@@ -6,8 +6,5 @@
 
 class Pelicula : public Video
 {
-    
-
-
 };
 #endif

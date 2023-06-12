@@ -15,5 +15,9 @@ public:
     // Constructor Episodio
     Episodio(string ID, string nombre, string generos, int calificacion, double minutos, string fecha, int temporada, int episodio);
 
+    // Getters
+    int getTemporada(); 
+    int getEpisodio(); 
+
 }; 
 #endif

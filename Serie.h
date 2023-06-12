@@ -9,7 +9,10 @@
 class Serie
 {
 private: 
-    vector<Episodio*> Episodios; 
+    vector<Episodio> Episodios; 
+
+public: 
+    Serie(vector<Episodio> Episodios); 
 
 };
 #endif

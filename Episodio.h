@@ -19,5 +19,7 @@ public:
     int getTemporada(); 
     int getEpisodio(); 
 
+    void mostrarInfo(); 
+
 }; 
 #endif

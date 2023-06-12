@@ -30,7 +30,7 @@ int main()
         if (datos.size() == 6)
         {
             cout << " Pelicula: ";
-            //new Pelicula(datos);
+            // new Pelicula(datos);
         }else
         {
             cout << " Episodio: ";

@@ -29,6 +29,8 @@ public:
 
     void setCalificacion(int calificacion); 
 
+    virtual void mostrarInfo() = 0; 
+
 }; 
 
 

@@ -11,32 +11,24 @@ protected:
     string ID; 
     string nombre; 
     string generos; 
-    int calificacion; // ¿Que pasa si se pasa una mayor a 7? 
+    double calificacion; // ¿Que pasa si se pasa una mayor a 7? 
     double minutos; 
     string fecha; 
 
 public: 
     // Constructor Video
-    Video(string ID, string nombre, string generos, int calificacion, double minutos, string fecha);
+    Video(string ID, string nombre, string generos, double calificacion, double minutos, string fecha);
 
     // getters 
-     
     string getNombre(); 
     string getGeneros();
     int getCalificacion();
 
-    // setters
-
+    // setter
     void setCalificacion(int calificacion); 
 
-    virtual void mostrarInfo() = 0; 
+    //virtual void mostrarInfo() = 0; 
 
 }; 
-
-
-
-
-
-
 
 #endif

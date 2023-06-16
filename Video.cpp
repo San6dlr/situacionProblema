@@ -1,12 +1,12 @@
 #include "Video.h"
 
-Video::Video(string ID, string nombre, string generos, double calificacion, double minutos, string fecha)
+Video::Video(string ID, string nombre, int duracion, string generos, double calificacion, string fecha)
 {
     this->ID = ID;
     this->nombre = nombre;
     this->generos = generos; 
     this->calificacion = calificacion;
-    this->minutos = minutos; 
+    this->duracion = duracion; 
     this->fecha = fecha;  
 }
 

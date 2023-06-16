@@ -1,18 +1,18 @@
 /*
-Autor: Roberto
+Autor: Santiago De la Riva
 Leer el archivo de texto en c++
 
 
 #include <iostream>
-#include <fstream> // input file-stream
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 #include "Video.h"
 #include "Pelicula.h"
 #include "Serie.h"
 #include "Episodio.h"
 
-#include <sstream> // Para string-stream
-#include <vector>
 #define CAL_MAYOR 7
 
 using namespace std;
@@ -27,51 +27,31 @@ int main()
     string linea;
     int numeroLinea = 1;
 
-    // Excepciones 
-    entrada.flags(ifstream::failbit); // si no funciona ios_base:: 
-    entrada.exceptions(ifstream::failbit);
-    try {
-        entrada.open("DatosPddeliculas.csv");
-
-    } catch(ifstream::failure &e)
-    {
-        cout << "ERROR expcepción al abrir el archivo" << endl; 
-        return -1; 
-
-    }
-
-    // Manejo normal del error aqui iba cerrado
-    if(entrada.fail())
-    {
-        cout << "error, no puedo leer al archivo..." << endl; 
-        return -1;  // Error 
-    }
-
-    vector<Pelicula*> Peliculas;    
+    vector<Pelicula *> Peliculas;
+    vector<Episodio *> Episodios;
 
     while (getline(entrada, linea))
     {
-        if(numeroLinea == 1)
+        if (numeroLinea == 1)
         {
-            numeroLinea++; 
-            continue; 
+            numeroLinea++;
+            continue;
         }
-
-        // cout << (numeroLinea++) << ": " << linea << endl;
 
         vector<string> datos = separar(linea);
         cout << (numeroLinea++);
 
         if (datos.size() == 6)
         {
-            //cout << linea;
-
-            cout << " Pelicula: ";
-            // new Pelicula(datos[i]);
+            //cout << " Pelicula: ";
+            Pelicula *peli = new Pelicula(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5]);
+            Peliculas.push_back(peli); 
         }
         else
         {
-            cout << " Episodio: ";
+            //cout << " Episodio: " << datos[0];
+            Episodio *ep = new Episodio(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5], datos[6], datos[7], stoi(datos[8]), stoi(datos[9])); 
+            Episodios.push_back(ep); 
         }
         cout << endl;
     }
@@ -103,4 +83,5 @@ vector<string> separar(string linea)
     // cout << "tokens: " << numeroTokens << endl << endl;
     return tokens;
 }
+
 */

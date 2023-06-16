@@ -2,22 +2,23 @@
 #ifndef VIDEO_H
 #define VIDEO_H
 #include<string>
+#include<iostream>
 using namespace std; 
 
 class Video
 {
 protected: 
-
+    // ID,Nombre Pelicula/Serie,Duración,Género,Calificación,Fecha Estreno,ID Episodio,Nombre Episodio,Temporada,Num Episodio
     string ID; 
     string nombre; 
-    string generos; 
-    double calificacion; // ¿Que pasa si se pasa una mayor a 7? 
-    double minutos; 
+    int duracion;
+    string generos;
+    double calificacion; // ¿Que pasa si se pasa una mayor a 7?  
     string fecha; 
 
 public: 
     // Constructor Video
-    Video(string ID, string nombre, string generos, double calificacion, double minutos, string fecha);
+    Video(string ID, string nombre, int duracion, string generos, double calificacion, string fecha);
 
     // getters 
     string getNombre(); 
@@ -27,8 +28,7 @@ public:
     // setter
     void setCalificacion(int calificacion); 
 
-    //virtual void mostrarInfo() = 0; 
+    virtual void mostrarInfo() = 0; 
 
 }; 
-
 #endif

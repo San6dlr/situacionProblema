@@ -6,5 +6,9 @@
 
 class Pelicula : public Video
 {
+
+public: 
+    Pelicula(string ID, string nombre, int duracion, string generos, double calificacion, string fecha);
+    void mostrarInfo(); 
 };
 #endif 

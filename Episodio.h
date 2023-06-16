@@ -8,12 +8,16 @@ class Episodio : public Video
 {
 
 private: 
+    string IDE;
+    string nombreE; 
     int temporada; 
     int episodio; 
 
 public: 
     // Constructor Episodio
-    Episodio(string ID, string nombre, string generos, int calificacion, double minutos, string fecha, int temporada, int episodio);
+    //ID,Nombre Pelicula/Serie,Duración,Género,Calificación,Fecha Estreno,ID Episodio,Nombre Episodio,Temporada,Num Episodio
+
+    Episodio(string ID, string nombre, int duracion, string generos, int calificacion, string fecha, string IDE, string nombreE, int temporada, int episodio);
 
     // Getters
     int getTemporada(); 

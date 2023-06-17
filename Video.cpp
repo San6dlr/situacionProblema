@@ -28,7 +28,7 @@ vector<string> Video::getGeneros()
             generos_separados.push_back(dato); 
         }
     }
-    return;
+    return generos_separados; 
 }
 
 void Video::setCalificacion(int calificacion)

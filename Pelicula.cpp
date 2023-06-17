@@ -7,4 +7,5 @@ Pelicula::Pelicula(string ID, string nombre, int duracion, string generos, doubl
 void Pelicula::mostrarInfo()
 {
     cout << "\n ------" + nombre + "--------" << endl; 
+
 }

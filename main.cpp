@@ -3,13 +3,18 @@
 #include "Streaming.h"
 
 using namespace std;
+using std::cin;
+using std::cout;
+using std::vector;
+
+#define CAL_MAYOR 7
 
 void subMenu();
-void subMenu2();
-void subMenu3();
-void subMenu4();
-void subMen5();
-void subMenu6();
+void subMenu2(Streaming &servicio);
+void subMenu3(Streaming &servicio);
+void subMenu4(Streaming &servicio);
+void subMen5(Streaming &servicio);
+void subMenu6(Streaming &servicio);
 
 int main()
 {
@@ -18,7 +23,7 @@ int main()
     bool cond = false;
     string archivo;
 
-    do
+    while (true)
     {
         cout << "\n*--------------MENÚ----------------*" << endl
              << "[1]. Cargar Archivo (.csv)" << endl
@@ -27,8 +32,18 @@ int main()
              << "[4]. Mostrar Peliculas (Por calificación)" << endl
              << "[5]. Calificar un Video" << endl
              << "[6]. Mostrar calificación promedio de una Serie" << endl
-             << "[7]. Salir" << endl;
+             << "[7]. Salir\n"
+             << endl;
         cin >> op;
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(256, '\n');
+            cout << "Input inválido, ingresa un número entre el 1 - 7 \n"
+                 << endl;
+            continue;
+        }
 
         if (op == 1)
         {
@@ -39,48 +54,140 @@ int main()
         }
         else if (op == 2)
         {
-            cout << "\n*--------------FILTRAR VIDEOS----------------*" << endl
-                 << "[1]. Mostrar por calificacion mayor o igual" << endl
-                 << "[2]. Mostrar calificacion por genero" << endl;
+            subMenu2(Netflix);
         }
         else if (op == 3)
         {
-            cout << "Dime la serie que desees ver";
+            subMenu3(Netflix); 
         }
-
-    } while (true);
+        else if (op == 4)
+        {
+            subMenu4(Netflix); 
+        }
+        else if (op == 5)
+        {
+            cout << "5";
+        }
+        else if (op == 6)
+        {
+            cout << "6";
+        }
+        else if (op == 7)
+        {
+            cout << "¡Vuelva pronto! :)" << endl;
+            break;
+        }
+        else
+        {
+            cout << "Error, input no válido" << endl
+                 << "Por favor, vuelva a intentarlo" << endl;
+            continue;
+        }
+    }
 
     return 0;
 }
 
 void subMenu2(Streaming &servicio)
 {
+    int op = 0;
     vector<Video *> video = servicio.getVideos();
 
-    int calificacion;
-    cout << "Dame una calificacion: ";
-    cin >> calificacion;
-    for (Video *current : video)
+    while (true)
     {
-        int cc = (*current).getCalificacion();
-        if (cc >= calificacion)
+        cout << "\n*--------------FILTRAR VIDEOS----------------*" << endl
+             << "[1]. Mostrar por calificacion mayor o igual" << endl
+             << "[2]. Mostrar PEL por genero" << endl
+             << "[3]. Regresar al menú principal\n"
+             << endl;
+        cin >> op;
+        if (cin.fail())
         {
-            (*current).mostrarInfo();
+            cin.clear();
+            cin.ignore(256, '\n');
+            cout << "Input inválido, ingresa un número entre el 1 - 3 \n"
+                 << endl;
+            continue;
         }
-    }
 
-    string generou;
-    cout << "Dame un genero: ";
-    cin >> generou;
-    for (Video *current : video)
-    {
-        vector<string> gc = (*current).getGeneros();
-        for (string genero : gc)
+        if (op == 1)
         {
-            if (genero == generou)
+            double cal;
+            while (true)
             {
-                (*current).mostrarInfo();
+                cout << "\nCalificación deseada: " << endl;
+                cin >> cal;
+                if (cin.fail() || cal < 0 || cal > CAL_MAYOR)
+                {
+                    cout << "Input inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
+                    cin.clear();
+                    cin.ignore(256, '\n');
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
             }
+
+            for (Video *current : video)
+            {
+                double cc = (*current).getCalificacion();
+
+                if (cc >= cal)
+                {
+                    (*current).mostrarInfo();
+                }
+            }
+        }
+        else if (op == 2)
+        {
+            while (true)
+            {
+                string generou;
+                vector<Video *> vg;
+                cout << "Dame un genero: ";
+                cin >> generou;
+
+                for (Video *current : video)
+                {
+                    vector<string> gc = (*current).getGeneros();
+
+                    for (string genero : gc)
+                    {
+                        if (genero == generou)
+                        {
+                            vg.push_back(current);
+                            //(*current).mostrarInfo();
+                        }
+                    }
+                }
+                if (vg.size() != 0)
+                {
+                    for (Video *vid : vg)
+                    {
+                        (*vid).mostrarInfo();
+                    }
+                    break;
+                }
+                else
+                {
+                    cout << "\nNo se encontró dicho género, vuelva a intentarlo." << endl
+                         << "Recuerde utilizar máyusculas \n" << endl;
+                    continue;
+                }
+            }
+        }
+
+        else if (op == 3)
+        {
+            return;
+        }
+        else
+        {
+            cout << "Error, input no válido" << endl
+                 << "Por favor, vuelva a intentarlo" << endl;
+            continue;
         }
     }
 }
@@ -88,17 +195,20 @@ void subMenu2(Streaming &servicio)
 void subMenu3(Streaming &servicio)
 {
     string nSerie;
-    cout << "Name de la serie: ";
-    cin >> nSerie;
     vector<Episodio *> episodios = servicio.getEpisodios();
     vector<Episodio> eSerie;
     // Lo que puedo hacer para errores es al final preguntar si length == 0
-
+    cout << "Name de la serie: " << endl;
+    cin.clear();
+    cin.ignore(256, '\n');
+    getline(cin, nSerie);
+   
     for (Episodio *current : episodios)
     {
         if (current->getNombre() == nSerie)
         {
             eSerie.push_back(*current);
+
         }
     }
 
@@ -118,12 +228,12 @@ void subMenu4(Streaming &servicio)
 {
     vector<Pelicula *> peliculas = servicio.getPeliculas();
 
-    int calificacion;
+    double calificacion;
     cout << "Dame una calificacion: ";
     cin >> calificacion;
     for (Pelicula *current : peliculas)
     {
-        int cc = (*current).getCalificacion();
+        double cc = (*current).getCalificacion();
         if (cc >= calificacion)
         {
             (*current).mostrarInfo();
@@ -133,7 +243,7 @@ void subMenu4(Streaming &servicio)
 
 void subMenu5(Streaming &servicio)
 {
-    int c = 0;
+    double c = 0;
     string nVideo;
     cout << "Name del video a calificar: ";
     cin >> nVideo;

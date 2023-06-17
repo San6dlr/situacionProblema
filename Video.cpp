@@ -13,7 +13,7 @@ Video::Video(string ID, string nombre, int duracion, string generos, double cali
 
 string Video::getNombre() {return nombre;}
 
-int Video::getCalificacion() {return calificacion;}
+double Video::getCalificacion() {return calificacion;}
 
 vector<string> Video::getGeneros()
 {
@@ -31,7 +31,7 @@ vector<string> Video::getGeneros()
     return generos_separados; 
 }
 
-void Video::setCalificacion(int calificacion)
+void Video::setCalificacion(double calificacion)
 {
     this->calificacion = calificacion;
 }

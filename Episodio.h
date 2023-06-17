@@ -17,9 +17,11 @@ public:
     // Constructor Episodio
     //ID,Nombre Pelicula/Serie,Duración,Género,Calificación,Fecha Estreno,ID Episodio,Nombre Episodio,Temporada,Num Episodio
 
-    Episodio(string ID, string nombre, int duracion, string generos, int calificacion, string fecha, string IDE, string nombreE, int temporada, int episodio);
+    Episodio(string ID, string nombre, int duracion, string generos, double calificacion, string fecha, string IDE, string nombreE, int temporada, int episodio);
 
     // Getters
+    string getNombre();
+    string getNombreESerie();
     int getTemporada(); 
     int getEpisodio(); 
 

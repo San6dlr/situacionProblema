@@ -9,31 +9,34 @@ using std::vector;
 
 #define CAL_MAYOR 7
 
-void subMenu();
+void subMenu1(Streaming &servicio);
 void subMenu2(Streaming &servicio);
 void subMenu3(Streaming &servicio);
 void subMenu4(Streaming &servicio);
-void subMen5(Streaming &servicio);
+void subMenu5(Streaming &servicio);
 void subMenu6(Streaming &servicio);
 
 int main()
 {
+
     Streaming Netflix;
     int op;
-    bool cond = false;
-    string archivo;
+    
+    subMenu1(Netflix);
 
     while (true)
     {
         cout << "\n*--------------MENÚ----------------*" << endl
-             << "[1]. Cargar Archivo (.csv)" << endl
-             << "[2]. Filtrar videos en general" << endl
+             << "[1]. Cargar otro Archivo (.csv)" << endl
+             << "[2]. Filtrar Videos en general" << endl
              << "[3]. Mostrar Series" << endl
              << "[4]. Mostrar Peliculas (Por calificación)" << endl
-             << "[5]. Calificar un Video" << endl
+             << "[5]. Calificar un Episodio / Película" << endl
              << "[6]. Mostrar calificación promedio de una Serie" << endl
              << "[7]. Salir\n"
              << endl;
+
+        cout << "¿Qué desea hacer el día de hoy? ";
         cin >> op;
 
         if (cin.fail())
@@ -45,12 +48,10 @@ int main()
             continue;
         }
 
+        cin.ignore();
         if (op == 1)
         {
-            cout << "\n Nombre de tu archivo: " << endl;
-            cin >> archivo;
-            Netflix.cargarCatalogo(archivo);
-            cout << "\n Archivo cargado con Éxito." << endl;
+            subMenu1(Netflix);
         }
         else if (op == 2)
         {
@@ -58,19 +59,19 @@ int main()
         }
         else if (op == 3)
         {
-            subMenu3(Netflix); 
+            subMenu3(Netflix);
         }
         else if (op == 4)
         {
-            subMenu4(Netflix); 
+            subMenu4(Netflix);
         }
         else if (op == 5)
         {
-            cout << "5";
+            subMenu5(Netflix);
         }
         else if (op == 6)
         {
-            cout << "6";
+            subMenu6(Netflix);
         }
         else if (op == 7)
         {
@@ -88,6 +89,33 @@ int main()
     return 0;
 }
 
+void subMenu1(Streaming &servicio)
+{
+    string archivo;
+    bool confirmacion;
+
+    while (true)
+    {
+
+        cout << "\nDame el nombre de tu archivo: ";
+        getline(cin, archivo);
+
+        confirmacion = servicio.cargarCatalogo(archivo);
+
+        if (confirmacion)
+        {
+            cout << "\nArchivo cargado con Éxito." << endl;
+            break;
+        }
+        else
+        {
+            cout << "\nError, no puedo leer al archivo..." << endl
+                 << "Recuerda teclear el nombre todo junto y sin '.csv'" << endl;
+            continue;
+        }
+    }
+}
+
 void subMenu2(Streaming &servicio)
 {
     int op = 0;
@@ -100,7 +128,11 @@ void subMenu2(Streaming &servicio)
              << "[2]. Mostrar PEL por genero" << endl
              << "[3]. Regresar al menú principal\n"
              << endl;
+
+        cout << "¿Qué desea hacer el día de hoy? ";
         cin >> op;
+        cout << endl; 
+
         if (cin.fail())
         {
             cin.clear();
@@ -110,13 +142,15 @@ void subMenu2(Streaming &servicio)
             continue;
         }
 
+        cin.ignore();
         if (op == 1)
         {
             double cal;
             while (true)
             {
-                cout << "\nCalificación deseada: " << endl;
+                cout << "\nCalificación deseada: ";
                 cin >> cal;
+
                 if (cin.fail() || cal < 0 || cal > CAL_MAYOR)
                 {
                     cout << "Input inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
@@ -130,6 +164,7 @@ void subMenu2(Streaming &servicio)
                 }
             }
 
+            cin.ignore();
             for (Video *current : video)
             {
                 double cc = (*current).getCalificacion();
@@ -147,7 +182,8 @@ void subMenu2(Streaming &servicio)
                 string generou;
                 vector<Video *> vg;
                 cout << "Dame un genero: ";
-                cin >> generou;
+
+                getline(cin, generou);
 
                 for (Video *current : video)
                 {
@@ -173,7 +209,9 @@ void subMenu2(Streaming &servicio)
                 else
                 {
                     cout << "\nNo se encontró dicho género, vuelva a intentarlo." << endl
-                         << "Recuerde utilizar máyusculas \n" << endl;
+                         << "Recuerde utilizar máyusculas" << endl
+                         << "Ejemplo: Animacion \n"
+                         << endl;
                     continue;
                 }
             }
@@ -194,47 +232,69 @@ void subMenu2(Streaming &servicio)
 
 void subMenu3(Streaming &servicio)
 {
-    string nSerie;
-    vector<Episodio *> episodios = servicio.getEpisodios();
-    vector<Episodio> eSerie;
-    // Lo que puedo hacer para errores es al final preguntar si length == 0
-    cout << "Name de la serie: " << endl;
-    cin.clear();
-    cin.ignore(256, '\n');
-    getline(cin, nSerie);
-   
-    for (Episodio *current : episodios)
+    while (true)
     {
-        if (current->getNombre() == nSerie)
+        string nSerie;
+        vector<Episodio *> episodios = servicio.getEpisodios();
+        vector<Episodio> eSerie;
+
+        cout << "Name de la serie: ";
+
+        getline(cin, nSerie);
+
+        for (Episodio *current : episodios)
         {
-            eSerie.push_back(*current);
-
+            if (current->getNombreESerie() == nSerie)
+            {
+                eSerie.push_back(*current);
+            }
         }
-    }
 
-    if (eSerie.size() != 0)
-    {
-        Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
-        cout << *serie;
-    }
-    else
-    {
-        cout << "error";
-        return;
+        if (eSerie.size() != 0)
+        {
+            Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
+            cout << *serie;
+            break;
+        }
+        else
+        {
+            cout << "\nNo se encontró dicha serie, vuelva a intentarlo." << endl
+                 << "Recuerde utilizar máyusculas" << endl
+                 << "Ejemplo: Game Of Thrones\n"
+                 << endl;
+            continue;
+        }
     }
 }
 
 void subMenu4(Streaming &servicio)
 {
+    double cal;
     vector<Pelicula *> peliculas = servicio.getPeliculas();
 
-    double calificacion;
-    cout << "Dame una calificacion: ";
-    cin >> calificacion;
+    while (true)
+    {
+        cout << "\nCalificación deseada: ";
+        cin >> cal;
+
+        if (cin.fail() || cal < 0 || cal > CAL_MAYOR)
+        {
+            cout << "Input inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
+            cin.clear();
+            cin.ignore(256, '\n');
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    cin.ignore();
     for (Pelicula *current : peliculas)
     {
-        double cc = (*current).getCalificacion();
-        if (cc >= calificacion)
+        double currentCal = (*current).getCalificacion();
+        if (currentCal >= cal)
         {
             (*current).mostrarInfo();
         }
@@ -243,51 +303,86 @@ void subMenu4(Streaming &servicio)
 
 void subMenu5(Streaming &servicio)
 {
-    double c = 0;
-    string nVideo;
-    cout << "Name del video a calificar: ";
-    cin >> nVideo;
-    vector<Video *> videos = servicio.getVideos();
-
-    for (Video *current : videos)
+    while (true)
     {
-        if (current->getNombre() == nVideo)
-        {
-            cout << "Dame la calificacion para: " + current->getNombre();
-            cin >> c;
-            cout << "Se asigno un " << c << "a la serie: " << current->getNombre() << endl;
-            return current->setCalificacion(c);
-        }
-    }
+        double c = 0;
+        string nVideo;
+        vector<Video *> videos = servicio.getVideos();
 
-    cout << "Error no se encontro  la serie, volver a ingresar un dato";
+        cout << "Nombre del Episodio o Película a calificar: ";
+
+        getline(cin, nVideo);
+
+        for (Video *current : videos)
+        {
+            if (current->getNombre() == nVideo)
+            {
+                 
+                while (true)
+                {
+                    cout << "¿Cuánto le pones a " + current->getNombre() + " : ";
+                    cin >> c;
+
+                    if (cin.fail() || c < 0 || c > CAL_MAYOR)
+                    {
+                        cout << "\nInput inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                cout << "\nSe asigno un " + to_string(c) + " a: " + current->getNombre() << endl;
+                current->setCalificacion(c);
+                cin.ignore();
+                return;
+            }
+        
+        }
+
+        cout << "\nNo se encontró dicho video, vuelva a intentarlo." << endl
+             << "Recuerde utilizar máyusculas" << endl
+             << endl;
+    }
 }
 
 void subMenu6(Streaming &servicio)
 {
-    string nSerie;
-    cout << "Name de la serie: ";
-    cin >> nSerie;
-    vector<Episodio *> episodios = servicio.getEpisodios();
-    vector<Episodio> eSerie;
-    // Lo que puedo hacer para errores es al final preguntar si length == 0
-
-    for (Episodio *current : episodios)
+    while (true)
     {
-        if (current->getNombre() == nSerie)
+        string nSerie;
+        vector<Episodio *> episodios = servicio.getEpisodios();
+        vector<Episodio> eSerie;
+
+        cout << "Name de la serie: ";
+
+        getline(cin, nSerie);
+
+        for (Episodio *current : episodios)
         {
-            eSerie.push_back(*current);
+            if (current->getNombreESerie() == nSerie)
+            {
+                eSerie.push_back(*current);
+            }
         }
-    }
 
-    if (eSerie.size() != 0)
-    {
-        Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
-        cout << (*serie).caliPromedio();
-    }
-    else
-    {
-        cout << "error";
-        return;
+        if (eSerie.size() != 0)
+        {
+            Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
+            cout << "\nCalificación promedio: " + to_string((*serie).caliPromedio()) << endl;
+            break;
+        }
+        else
+        {
+            cout << "\nNo se encontró dicha serie, vuelva a intentarlo." << endl
+                 << "Recuerde utilizar máyusculas" << endl
+                 << "Ejemplo: Game Of Thrones\n"
+                 << endl;
+            continue;
+        }
     }
 }

@@ -21,12 +21,12 @@ public:
     Video(string ID, string nombre, int duracion, string generos, double calificacion, string fecha);
 
     // getters 
-    string getNombre(); 
-    int getCalificacion();
+    virtual string getNombre(); 
+    double getCalificacion();
     vector<string> getGeneros();
 
     // setter
-    void setCalificacion(int calificacion); 
+    void setCalificacion(double calificacion); 
 
     virtual void mostrarInfo() = 0; 
 }; 

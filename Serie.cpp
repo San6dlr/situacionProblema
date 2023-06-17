@@ -19,12 +19,13 @@ Serie::Serie(vector<Episodio> Episodios)
 
 double Serie::caliPromedio()
 {
-    double promedio = 0; 
+    double promedio = 0;
+    double total = Episodios.size(); 
     for(Episodio cap: Episodios) 
     {
         promedio += cap.getCalificacion();
     }
-    return promedio / Episodios.size();
+    return promedio / total;
 }
 
 ostream &operator<<(ostream &output, const Serie &s)

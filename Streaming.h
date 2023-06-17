@@ -5,6 +5,7 @@
 #include "Pelicula.h"
 #include "Serie.h"
 #include "Episodio.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -22,7 +23,7 @@ private:
 
 public:
     vector<string> separar(string linea);
-    void cargarCatalogo(string base);
+    bool cargarCatalogo(string base);
 
     vector<Video*> getVideos(); 
     vector<Pelicula*> getPeliculas();

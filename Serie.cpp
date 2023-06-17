@@ -5,7 +5,7 @@ Serie::Serie(vector<Episodio> Episodios)
     this->Episodios = Episodios; 
 }
 
-void Serie::mostrarEpisodios()
+/*void Serie::mostrarEpisodios()
 {
     cout << "\t" + nombreS << endl; 
 
@@ -15,6 +15,7 @@ void Serie::mostrarEpisodios()
         cout << endl << "S" + to_string(cap.getTemporada()) + " E" + to_string(cap.getEpisodio()) + " - " + cap.getNombre() << endl;
     }
 }
+*/
 
 double Serie::caliPromedio()
 {
@@ -23,5 +24,14 @@ double Serie::caliPromedio()
     {
         promedio += cap.getCalificacion();
     }
-    return promedio;
+    return promedio / Episodios.size();
+}
+
+ostream &operator<<(ostream &output, const Serie &s)
+{
+    for(Episodio cap : s.Episodios)
+    {
+        output << endl << "S" + to_string(cap.getTemporada()) + " E" + to_string(cap.getEpisodio()) + " - " + cap.getNombre() << endl;
+    }
+    return output; 
 }

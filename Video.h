@@ -22,13 +22,12 @@ public:
 
     // getters 
     string getNombre(); 
-    string getGeneros();
     int getCalificacion();
+    vector<string> getGeneros();
 
     // setter
     void setCalificacion(int calificacion); 
 
     virtual void mostrarInfo() = 0; 
-
 }; 
 #endif

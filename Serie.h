@@ -17,8 +17,8 @@ private:
 public: 
     Serie(vector<Episodio> Episodios); 
 
-    void mostrarEpisodios();
-    double caliPromedio(); 
-
+    //void mostrarEpisodios();
+    double caliPromedio();
+    friend ostream &operator<<(ostream &output, const Serie &s); // cout << Serie
 };
 #endif

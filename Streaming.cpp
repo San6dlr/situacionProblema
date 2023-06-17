@@ -29,7 +29,13 @@ void Streaming::cargarCatalogo(string base)
 {
     // WHILE CHECAR
     ifstream entrada;
-    entrada.open("base");
+    entrada.open(base);
+
+    if (entrada.fail())
+    {
+        cout << "error, no puedo leer al archivo..." << endl;
+        return; 
+    }
 
     string linea;
     int numeroLinea = 1;
@@ -43,26 +49,29 @@ void Streaming::cargarCatalogo(string base)
         }
 
         vector<string> datos = separar(linea);
-        //cout << (numeroLinea++);
+        // cout << (numeroLinea++);
 
         if (datos.size() == 6)
         {
-            //cout << " Pelicula: ";
+            // cout << " Pelicula: ";
             Pelicula *peli = new Pelicula(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5]);
-            Peliculas.push_back(peli); 
+            Peliculas.push_back(peli);
+            Videos.push_back(peli); 
         }
         else
         {
-            //cout << " Episodio: " << datos[0];
-            Episodio *ep = new Episodio(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5], datos[6], datos[7], stoi(datos[8]), stoi(datos[9])); 
-            Episodios.push_back(ep); 
+            // cout << " Episodio: " << datos[0];
+            Episodio *ep = new Episodio(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5], datos[6], datos[7], stoi(datos[8]), stoi(datos[9]));
+            Episodios.push_back(ep);
+            Videos.push_back(ep); 
         }
-        //cout << endl;
+        // cout << endl;
     }
 
     entrada.close();
 }
 
-vector<Pelicula *> Streaming::getPeliculas(){return Peliculas;}
+vector<Pelicula *> Streaming::getPeliculas() { return Peliculas; }
 
-vector<Episodio *> Streaming::getEpisodios(){return Episodios;}
+vector<Episodio *> Streaming::getEpisodios() { return Episodios; }
+

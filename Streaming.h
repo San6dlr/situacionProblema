@@ -16,13 +16,18 @@ using namespace std;
 class Streaming
 {
 private:
+    vector<Video*> Videos; 
     vector<Pelicula*> Peliculas;
     vector<Episodio*> Episodios;
+
 public:
     vector<string> separar(string linea);
     void cargarCatalogo(string base);
 
+    vector<Video*> getVideos(); 
     vector<Pelicula*> getPeliculas();
     vector<Episodio*> getEpisodios(); 
+
 };
 #endif
+

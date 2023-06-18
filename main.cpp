@@ -3,6 +3,8 @@ Autor: Santiago De La Riva Juárez
 Main para la implementación del sistema de Streaming
 */
 
+// Para compilar :) -> g++ -std=c++11 *.cpp
+
 #include <iostream>
 #include "Streaming.h"
 

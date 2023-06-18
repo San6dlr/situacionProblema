@@ -152,8 +152,8 @@ void subMenu2(Streaming &servicio)
     while (true)
     {
         cout << "\n*--------------FILTRAR VIDEOS----------------*" << endl
-             << "[1]. Mostrar por calificacion mayor o igual" << endl
-             << "[2]. Mostrar PEL por genero" << endl
+             << "[1]. Mostrar por calificación mayor o igual" << endl
+             << "[2]. Mostrar por género" << endl
              << "[3]. Regresar al menú principal\n"
              << endl;
 

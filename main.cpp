@@ -1,3 +1,7 @@
+/*
+Autor: Santiago De La Riva Juárez
+Main para la implementación del sistema de Streaming
+*/
 
 #include <iostream>
 #include "Streaming.h"
@@ -7,40 +11,49 @@ using std::cin;
 using std::cout;
 using std::vector;
 
+// Se define una constante para la calificación mayor 
 #define CAL_MAYOR 7
 
-void subMenu1(Streaming &servicio);
-void subMenu2(Streaming &servicio);
-void subMenu3(Streaming &servicio);
-void subMenu4(Streaming &servicio);
-void subMenu5(Streaming &servicio);
-void subMenu6(Streaming &servicio);
+// Se declaran las funciones que harán de "Sub Menus" 
+
+void subMenu1(Streaming &servicio); // Función para cargar un archivo
+void subMenu2(Streaming &servicio); // Función para filtrar videos (genero / calificación)
+void subMenu3(Streaming &servicio); // Función para mostrar episodios de una serie
+void subMenu4(Streaming &servicio); // Función para mostrar peliculas por calificación
+void subMenu5(Streaming &servicio); // Función para calificar un video
+void subMenu6(Streaming &servicio); // Función para calcular promedio de una serie
 
 int main()
 {
-
+    // Se declara un objeto de tipo Streaming para cargar una base de datos y trabajar con los videos
     Streaming Netflix;
     int op;
     
+    // La primera vez se pide cargar un archivo antes de iniciar el menú
     subMenu1(Netflix);
 
+    // Loop para el manejo del menú y errores de input del usuario
     while (true)
     {
-        cout << "\n*--------------MENÚ----------------*" << endl
+        // Se muestra el Menú
+        cout << "\n*------------------------MENÚ-------------------------*" << endl
              << "[1]. Cargar otro Archivo (.csv)" << endl
-             << "[2]. Filtrar Videos en general" << endl
-             << "[3]. Mostrar Series" << endl
+             << "[2]. Filtrar Videos en general (Género / Calificación)" << endl
+             << "[3]. Mostrar Episodios de una Serie" << endl
              << "[4]. Mostrar Peliculas (Por calificación)" << endl
              << "[5]. Calificar un Episodio / Película" << endl
              << "[6]. Mostrar calificación promedio de una Serie" << endl
              << "[7]. Salir\n"
-             << endl;
+             << "*------------------------STREAMING---------------------*" << endl;
 
-        cout << "¿Qué desea hacer el día de hoy? ";
+        cout << "\n¿Qué desea hacer el día de hoy? ";
         cin >> op;
 
+        // Manejo de errores para el input del usuario
         if (cin.fail())
         {
+            // EJEMPLO
+            // Si el usuario ingresa una string, se pide volver a intentarlo
             cin.clear();
             cin.ignore(256, '\n');
             cout << "Input inválido, ingresa un número entre el 1 - 7 \n"
@@ -48,7 +61,10 @@ int main()
             continue;
         }
 
+        // Se 'limpia´el input para el futuro manejo adecuado del método getline()
         cin.ignore();
+
+        // Opciones
         if (op == 1)
         {
             subMenu1(Netflix);
@@ -75,11 +91,13 @@ int main()
         }
         else if (op == 7)
         {
-            cout << "¡Vuelva pronto! :)" << endl;
+            cout << "¡Vuelva pronto! :)\n" << endl;
             break;
         }
+        // Si hubo algún error, se vuelve a iterar el ciclo para preguntar la opción de nuevo
         else
         {
+            // Menejo de error del input del usuario
             cout << "Error, input no válido" << endl
                  << "Por favor, vuelva a intentarlo" << endl;
             continue;
@@ -89,11 +107,13 @@ int main()
     return 0;
 }
 
+// Función para cargar un archivo
 void subMenu1(Streaming &servicio)
 {
     string archivo;
     bool confirmacion;
 
+    // Loop para el manejo de errores de input del usuario
     while (true)
     {
 
@@ -102,11 +122,13 @@ void subMenu1(Streaming &servicio)
 
         confirmacion = servicio.cargarCatalogo(archivo);
 
+        // Se confirma si el archivo se cargo correctamente
         if (confirmacion)
         {
             cout << "\nArchivo cargado con Éxito." << endl;
             break;
         }
+        // Si no se cargo correctamente, se vuelve a iterar el ciclo para volver a cargar el archivo
         else
         {
             cout << "\nError, no puedo leer al archivo..." << endl
@@ -116,11 +138,15 @@ void subMenu1(Streaming &servicio)
     }
 }
 
+// Función para filtrar videos (genero / calificación)
 void subMenu2(Streaming &servicio)
 {
     int op = 0;
+
+    // Vector de apuntadores de video, se crea la variable para que el codigo se vea limpio
     vector<Video *> video = servicio.getVideos();
 
+    // Loop para el manejo de errores de input del usuario y manejo del 'Sub Menú'
     while (true)
     {
         cout << "\n*--------------FILTRAR VIDEOS----------------*" << endl
@@ -133,8 +159,11 @@ void subMenu2(Streaming &servicio)
         cin >> op;
         cout << endl; 
 
+        // Manejo de errores para el input del usuario
         if (cin.fail())
         {
+            // EJEMPLO
+            // Si el usuario ingresa una string, se pide volver a intentarlo
             cin.clear();
             cin.ignore(256, '\n');
             cout << "Input inválido, ingresa un número entre el 1 - 3 \n"
@@ -143,16 +172,21 @@ void subMenu2(Streaming &servicio)
         }
 
         cin.ignore();
+
         if (op == 1)
         {
             double cal;
+
+            // Loop para continuidad del programa y manejo de errores de input del usuario
             while (true)
             {
                 cout << "\nCalificación deseada: ";
                 cin >> cal;
 
+                // Manejo de errores para el input del usuario
                 if (cin.fail() || cal < 0 || cal > CAL_MAYOR)
                 {
+                    // EJEMPLO.- La calificación ingresada es negativa
                     cout << "Input inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
                     cin.clear();
                     cin.ignore(256, '\n');
@@ -163,41 +197,58 @@ void subMenu2(Streaming &servicio)
                     break;
                 }
             }
-
             cin.ignore();
+
+            // Se itera sobre cada video del catálogo
             for (Video *current : video)
             {
+                // Se guarda la calificacion del video iterado en ese momento
                 double cc = (*current).getCalificacion();
 
+                // Se compara la calificacion del video actual con la que pidió el usuario
                 if (cc >= cal)
                 {
-                    (*current).mostrarInfo();
+                    // Si es mayor o igual a la calificación ingresada se muestra el Video
+                    (*current).mostrarInfo(); // Polimorfismo
                 }
             }
         }
+
+        // Filtrar por género 
         else if (op == 2)
         {
+
+            // Loop para continuidad del programa y manejo de errores de input del usuario
             while (true)
             {
+                // Género que escribio el usuario
                 string generou;
-                vector<Video *> vg;
-                cout << "Dame un genero: ";
 
+                // Se crea otro vector que guardará los videos que cumplan con el género que desee ver el usuario
+                vector<Video *> vg;
+
+                cout << "Dame un genero: ";
                 getline(cin, generou);
 
+                // Se itera sobre cada video del catálogo        
                 for (Video *current : video)
                 {
-                    vector<string> gc = (*current).getGeneros();
+                    // Se obtiene un vector con los géneros del video separados (cada elemento es un género)
+                    vector<string> generoCurrent = (*current).getGeneros();
 
-                    for (string genero : gc)
+                    // Se itera cada género de un video
+                    for (string genero : generoCurrent)
                     {
+                        // Compara si algún género del video actual cumple con el género que pidió el usuario
                         if (genero == generou)
                         {
                             vg.push_back(current);
-                            //(*current).mostrarInfo();
                         }
                     }
                 }
+
+                // Si el vector con apuntadores de videos que cumplen con el género es distinto de cero
+                // Quiere decir que se encontraron los videos (input del usuario correcto)
                 if (vg.size() != 0)
                 {
                     for (Video *vid : vg)
@@ -206,6 +257,8 @@ void subMenu2(Streaming &servicio)
                     }
                     break;
                 }
+
+                // No se encontró el género que pidió el usuario
                 else
                 {
                     cout << "\nNo se encontró dicho género, vuelva a intentarlo." << endl
@@ -217,10 +270,13 @@ void subMenu2(Streaming &servicio)
             }
         }
 
+        // Regresar al menú principal
         else if (op == 3)
         {
             return;
         }
+
+        // Error de input 
         else
         {
             cout << "Error, input no válido" << endl
@@ -230,21 +286,22 @@ void subMenu2(Streaming &servicio)
     }
 }
 
+
 void subMenu3(Streaming &servicio)
 {
     while (true)
     {
-        string nSerie;
+        string nombreSerie;
         vector<Episodio *> episodios = servicio.getEpisodios();
         vector<Episodio> eSerie;
 
-        cout << "Name de la serie: ";
+        cout << "Nombre de la serie: ";
 
-        getline(cin, nSerie);
+        getline(cin, nombreSerie);
 
         for (Episodio *current : episodios)
         {
-            if (current->getNombreESerie() == nSerie)
+            if (current->getNombreESerie() == nombreSerie)
             {
                 eSerie.push_back(*current);
             }
@@ -344,8 +401,8 @@ void subMenu5(Streaming &servicio)
         
         }
 
-        cout << "\nNo se encontró dicho video, vuelva a intentarlo." << endl
-             << "Recuerde utilizar máyusculas" << endl
+        cout << "\nNo se encontró dicho Episodio / Pelicula, vuelva a intentarlo." << endl
+             << "Recuerde utilizar máyusculas y espacios." << endl
              << endl;
     }
 }
@@ -358,7 +415,7 @@ void subMenu6(Streaming &servicio)
         vector<Episodio *> episodios = servicio.getEpisodios();
         vector<Episodio> eSerie;
 
-        cout << "Name de la serie: ";
+        cout << "Nombre de la serie: ";
 
         getline(cin, nSerie);
 

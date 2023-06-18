@@ -1,5 +1,11 @@
+/*
+Autor: Santiago De La Riva Juárez
+Se implementa el constructor y los métodos para el manejo del archivo y los getters
+*/
+
 #include "Streaming.h"
 
+// Método para separar cada línea del archivo
 vector<string> Streaming::separar(string linea)
 {
 
@@ -9,31 +15,29 @@ vector<string> Streaming::separar(string linea)
 
     string dato; // token individual
 
-    int numeroTokens = 0;
-
-    while (getline(entrada, dato, ',')) // dependiendo de cuantos tokens click derecho formatear documento
+    while (getline(entrada, dato, ','))
     {
 
         if (dato != "" && dato != "\n" && dato != "\r")
         {
-            // cout << dato << endl;
-            tokens.push_back(dato); // GUARDA en el vector
-            // numeroTokens++;
+            tokens.push_back(dato);
         }
     }
-    // cout << "tokens: " << numeroTokens << endl << endl;
     return tokens;
 }
 
+// Genera los vectores de apuntadores de Videos, Peliculas y Episodios
 bool Streaming::cargarCatalogo(string archivo)
 {
 
     ifstream entrada;
     entrada.open(archivo + ".csv");
 
+    // Se comprueba si el archivo se leyó con éxito
     if (entrada.fail())
     {
-        return false; 
+        // Regresa un bool para confirmarlo con main
+        return false;
     }
 
     string linea;
@@ -41,6 +45,7 @@ bool Streaming::cargarCatalogo(string archivo)
 
     while (getline(entrada, linea))
     {
+        // Se saltá la primera línea de información
         if (numeroLinea == 1)
         {
             numeroLinea++;
@@ -48,32 +53,35 @@ bool Streaming::cargarCatalogo(string archivo)
         }
 
         vector<string> datos = separar(linea);
-        // cout << (numeroLinea++);
 
         if (datos.size() == 6)
         {
-            // cout << " Pelicula: ";
+            // Se crea una dirección de un objeto de tipo Pelicula
             Pelicula *peli = new Pelicula(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5]);
             Peliculas.push_back(peli);
-            Videos.push_back(peli); 
+
+            // Esta direccion también se agrega al vector Videos
+            Videos.push_back(peli);
         }
         else
         {
-            // cout << " Episodio: " << datos[0];
+            // Se crea una dirección de un objeto de tipo Episodio
             Episodio *ep = new Episodio(datos[0], datos[1], stoi(datos[2]), datos[3], stod(datos[4]), datos[5], datos[6], datos[7], stoi(datos[8]), stoi(datos[9]));
             Episodios.push_back(ep);
-            Videos.push_back(ep); 
+
+            // Esta direccion también se agrega al vector Videos
+            Videos.push_back(ep);
         }
-        // cout << endl;
     }
 
+    // Cerramos el archivo y regresamos true para confirmar que el catálogo se cargo con éxito
     entrada.close();
     return true;
 }
 
-vector<Video *> Streaming::getVideos() {return Videos;}
+// Getters de los vectores de apuntadores de Videos
+vector<Video *> Streaming::getVideos() { return Videos; }
 
 vector<Pelicula *> Streaming::getPeliculas() { return Peliculas; }
 
 vector<Episodio *> Streaming::getEpisodios() { return Episodios; }
-

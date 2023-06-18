@@ -202,10 +202,10 @@ void subMenu2(Streaming &servicio)
             // Se itera sobre cada video del catálogo
             for (Video *current : video)
             {
-                // Se guarda la calificacion del video iterado en ese momento
+                // Se guarda la calificación del video iterado en ese momento
                 double cc = (*current).getCalificacion();
 
-                // Se compara la calificacion del video actual con la que pidió el usuario
+                // Se compara la calificación del video actual con la que pidió el usuario
                 if (cc >= cal)
                 {
                     // Si es mayor o igual a la calificación ingresada se muestra el Video
@@ -221,7 +221,7 @@ void subMenu2(Streaming &servicio)
             // Loop para continuidad del programa y manejo de errores de input del usuario
             while (true)
             {
-                // Género que escribio el usuario
+                // Género que escribió el usuario
                 string generou;
 
                 // Se crea otro vector que guardará los videos que cumplan con el género que desee ver el usuario
@@ -276,7 +276,7 @@ void subMenu2(Streaming &servicio)
             return;
         }
 
-        // Error de input 
+        // Si ocurre un error de input 
         else
         {
             cout << "Error, input no válido" << endl
@@ -286,33 +286,48 @@ void subMenu2(Streaming &servicio)
     }
 }
 
-
+// Función para mostrar episodios de una serie
 void subMenu3(Streaming &servicio)
 {
+    // Loop para continuidad del programa y manejo de errores de input del usuario
     while (true)
     {
+        // Serie que escribió el usuario
         string nombreSerie;
+
+        // Vector de apuntadores de Episodios (contiene todos los EPS del catálogo)
         vector<Episodio *> episodios = servicio.getEpisodios();
+
+        // Se crea otro vector que guardará los episodios de la serie deseada
         vector<Episodio> eSerie;
 
         cout << "Nombre de la serie: ";
-
         getline(cin, nombreSerie);
 
+        // Se itera sobre todos los episodios
         for (Episodio *current : episodios)
         {
+            // Compara si el nombre de la serie del EP actual es el de la serie deseada
             if (current->getNombreESerie() == nombreSerie)
             {
+                // Se agrega al vector de la serie deseada
                 eSerie.push_back(*current);
             }
         }
 
+        // Si el vector con apuntadores de Episodios de la serie deseada es distinto de cero
+        // Quiere decir que se encontró la Serie (input del usuario correcto)
         if (eSerie.size() != 0)
         {
-            Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
+            // Se crea una dirección de un objeto tipo Serie
+            Serie *serie = new Serie(eSerie); 
+
+            // Sobrecarga del operador '<<'
             cout << *serie;
             break;
         }
+
+        // No se encontró la serie que pidió el usuario
         else
         {
             cout << "\nNo se encontró dicha serie, vuelva a intentarlo." << endl
@@ -324,18 +339,23 @@ void subMenu3(Streaming &servicio)
     }
 }
 
+// Función para mostrar peliculas por calificación
 void subMenu4(Streaming &servicio)
 {
     double cal;
+    // Vector de apuntadores de Pelicula (con todas las peliculas del catálogo)
     vector<Pelicula *> peliculas = servicio.getPeliculas();
 
+    // Loop para continuidad del programa y manejo de errores de input del usuario
     while (true)
     {
         cout << "\nCalificación deseada: ";
         cin >> cal;
 
+        // Manejo de errores para el input del usuario
         if (cin.fail() || cal < 0 || cal > CAL_MAYOR)
         {
+            // EJEMPLO.- La calificación ingresada es más que la mayor
             cout << "Input inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
             cin.clear();
             cin.ignore(256, '\n');
@@ -348,38 +368,50 @@ void subMenu4(Streaming &servicio)
     }
 
     cin.ignore();
+
+    // Se itera sobre todas las peliculas
     for (Pelicula *current : peliculas)
     {
+        // Se guarda la calificación de la pelicula iterada
         double currentCal = (*current).getCalificacion();
+
+        // Se compara la calificación de la pelicula actual con la que pidió el usuario
         if (currentCal >= cal)
         {
+            // Si es mayor o igual a la calificación ingresada se muestra el Video
             (*current).mostrarInfo();
         }
     }
 }
 
+// Función para calificar un video
 void subMenu5(Streaming &servicio)
 {
     while (true)
     {
         double c = 0;
-        string nVideo;
+        string nombreVideo;
+
+        // Vector con las direcciones de todos los videos
         vector<Video *> videos = servicio.getVideos();
 
         cout << "Nombre del Episodio o Película a calificar: ";
 
-        getline(cin, nVideo);
+        getline(cin, nombreVideo);
 
+        // Se itera sobre todos los videos
         for (Video *current : videos)
         {
-            if (current->getNombre() == nVideo)
-            {
-                 
+            // Se verifica si el video iterado es el video que pidió calificar el usuario
+            if (current->getNombre() == nombreVideo)
+            {   
+                // Loop para continuidad del programa y manejo de errores de input del usuario
                 while (true)
                 {
                     cout << "¿Cuánto le pones a " + current->getNombre() + " : ";
                     cin >> c;
 
+                    // Manejo de errores para el input del usuario
                     if (cin.fail() || c < 0 || c > CAL_MAYOR)
                     {
                         cout << "\nInput inválido, ingresa una calificación del 1 -" + to_string(CAL_MAYOR) << endl;
@@ -393,46 +425,67 @@ void subMenu5(Streaming &servicio)
                     }
                 }
 
+                // Se asigna la nueva calificación al video
                 cout << "\nSe asigno un " + to_string(c) + " a: " + current->getNombre() << endl;
                 current->setCalificacion(c);
+
                 cin.ignore();
+
+                // Termina con éxito la función
                 return;
             }
         
         }
 
+        // Si se llega a este punto, quiere decir que no se encontró el nombre del video
         cout << "\nNo se encontró dicho Episodio / Pelicula, vuelva a intentarlo." << endl
              << "Recuerde utilizar máyusculas y espacios." << endl
              << endl;
     }
 }
 
+// Función para calcular promedio de una serie
 void subMenu6(Streaming &servicio)
 {
+    // Loop para continuidad del programa y manejo de errores de input del usuario
     while (true)
     {
-        string nSerie;
+        // Serie que escribió el usuario
+        string nombreSerie;
+
+        // Vector de apuntadores de Episodios (contiene todos los EPS del catálogo)
         vector<Episodio *> episodios = servicio.getEpisodios();
+        
+        // Se crea otro vector que guardará los episodios de la serie deseada
         vector<Episodio> eSerie;
 
         cout << "Nombre de la serie: ";
+        getline(cin, nombreSerie);
 
-        getline(cin, nSerie);
-
+        // Se itera sobre todos los episodios
         for (Episodio *current : episodios)
         {
-            if (current->getNombreESerie() == nSerie)
+            // Compara si el nombre de la serie del EP actual es el de la serie deseada
+            if (current->getNombreESerie() == nombreSerie)
             {
+                // Se agrega al vector de la serie deseada
                 eSerie.push_back(*current);
             }
         }
 
+        // Si el vector con apuntadores de Episodios de la serie deseada es distinto de cero
+        // Quiere decir que se encontró la Serie (input del usuario correcto)
         if (eSerie.size() != 0)
         {
-            Serie *serie = new Serie(eSerie); // checar lo de apuntador y ver si puedo pasarlo a serie
+            // Se crea una dirección de un objeto tipo Serie
+            Serie *serie = new Serie(eSerie); 
+
+            // Calcula el promedio de la serie
             cout << "\nCalificación promedio: " + to_string((*serie).caliPromedio()) << endl;
             break;
         }
+
+         // No se encontró la serie que pidió el usuario
         else
         {
             cout << "\nNo se encontró dicha serie, vuelva a intentarlo." << endl
@@ -443,3 +496,4 @@ void subMenu6(Streaming &servicio)
         }
     }
 }
+
